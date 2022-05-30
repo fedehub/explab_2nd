@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>erl2</name>
+  <name>explab_2nd</name>
   <version>0.0.0</version>
-  <description>The erl2 package</description>
+  <description>The explab_2nd package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

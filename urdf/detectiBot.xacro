@@ -2,8 +2,8 @@
 <robot name="m2wr" xmlns:xacro="https://www.ros.org/wiki/xacro" >
     
 
- <xacro:include filename="$(find robot_urdf)/urdf/dbMaterials.xacro" />
- <xacro:include filename="$(find robot_urdf)/urdf/detectiBot.gazebo" />
+ <xacro:include filename="$(find explab_2nd)/urdf/materials.xacro" />
+ <xacro:include filename="$(find explab_2nd)/urdf/detectiBot.gazebo" />
 
  <xacro:macro name="cylinder_inertia" params="mass r l"> 
     <inertia ixx="${mass*(3*r*r+l*l)/12}" ixy = "0" ixz = "0"
@@ -50,7 +50,7 @@
     <pose>0 0 0.1 0 0 0</pose>
     
     <inertial>
-      <mass value="8"/>
+      <mass value="5"/>
       <origin rpy="0 0 0" xyz="0 0 0.1"/>
       <inertia ixx="0.0395416666667" ixy="0" ixz="0" iyy="0.106208333333" iyz="0" izz="0.106208333333"/>
     </inertial>
@@ -136,7 +136,7 @@
 
   <link name="arm_base_link">
   	<inertial>
-  		<mass value="1.2"/>
+  		<mass value="0.1"/>
   		<origin xyz="0 0 0" rpy="0 0 0" />
   		<inertia ixx="0.0000416666667" ixy="0" ixz="0" iyy="0.0000416666667" iyz="0" izz="0.0000416666667"/>
   	</inertial>
@@ -164,20 +164,20 @@
 
   <link name="arm_link_01">
   	<inertial>
-  		<mass value="0.03"/>
+  		<mass value="0.025"/>
   		<origin xyz="0 0 0" rpy="0 0 0" />
   		<inertia ixx="0.000010279" ixy="0" ixz="0" iyy="0.000010279" iyz="0" izz="0.000007225"/>
   	</inertial>
   	<collision>
-  	  <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  	  <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.04" length="0.3"/>
+        <cylinder radius="0.04" length="0.08"/>
       </geometry>
   	</collision>
   	<visual>
-  	  <origin xyz="0 0 3" rpy="0 0 0"/>
+  	  <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.04" length="0.3"/>
+        <cylinder radius="0.04" length="0.08"/>
       </geometry>
       <material name="red" />
   	</visual>
@@ -194,20 +194,20 @@
 
     <link name="arm_link_02">
   	<inertial>
-  		<mass value="0.02"/>
+  		<mass value="0.025"/>
   		<origin xyz="0 0 0" rpy="0 0 0" />
   		<inertia ixx="0.000010279" ixy="0" ixz="0" iyy="0.000010279" iyz="0" izz="0.000007225"/>
   	</inertial>
   	<collision>
-  	  <origin xyz="0 0 0.20" rpy="0 0 0"/>
+  	  <origin xyz="0 0 0.04" rpy="0 0 0"/>
       <geometry>
         <cylinder radius="0.04" length="0.08"/>
       </geometry>
   	</collision>
   	<visual>
-  	  <origin xyz="0 0 0.20" rpy="0 0 0"/>
+  	  <origin xyz="0 0 0.04" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.04" length="0.3"/>
+        <cylinder radius="0.04" length="0.08"/>
       </geometry>
       <material name="red" />
   	</visual>
@@ -223,7 +223,7 @@
 
       <link name="arm_link_03">
   	<inertial>
-  		<mass value="0.02"/>
+  		<mass value="0.025"/>
   		<origin xyz="0 0 0" rpy="0 0 0" />
   		<inertia ixx="0.000010279" ixy="0" ixz="0" iyy="0.000010279" iyz="0" izz="0.000007225"/>
   	</inertial>
@@ -278,28 +278,6 @@
   	<parent link="arm_link_03"/>
   	<child link="arm_link_04"/>
   </joint>
-  
-  <link name="cluedo_link">
-  	<inertial>
-  		<mass value="0.004"/>
-  		<origin xyz="0 0 0" rpy="0 0 0" />
-  		<inertia ixx="0.000010279" ixy="0" ixz="0" iyy="0.000010279" iyz="0" izz="0.000007225"/>
-  	</inertial>
-  	<collision>
-  	  <origin xyz="0 0 0.04" rpy="0 0 1.57"/>
-      <geometry>
-        <box size="0.04 0.3 0.1"/>
-      </geometry>
-  	</collision>
-  	<visual>
-  	  <origin xyz="0 0 0.04" rpy="0 0 1.57"/>
-      <geometry>
-        <box size="0.034 0.2 0.08"/>
-      </geometry>
-      <material name="red" />
-  	</visual>
-  </link>
-  
 
 
 <link name="right_grip_link">
