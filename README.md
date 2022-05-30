@@ -11,7 +11,7 @@ To do:
   - [ ] modify the `launch` file, accordingly
 - [ ] moveit frammework
  - [ ] output file 
-- [ ] rosPlan
+ - [ ] rosPlan
 
 
 ### Resources
