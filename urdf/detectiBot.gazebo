@@ -1,5 +1,10 @@
 <?xml version="1.0" ?>
-<robot name="m2wr" xmlns:xacro="https://www.ros.org/wiki/xacro" >
+<robot name="detectiBot" xmlns:xacro="https://www.ros.org/wiki/xacro" >
+
+<!-- ==================================== gazebo/material  ========================================= -->
+<!-- ======================================== Joint  =============================================== -->
+<!-- ========================================= FB  ================================================= -->
+
 <gazebo reference="base_link">
     <material>Gazebo/Orange</material>
   </gazebo>
@@ -38,6 +43,7 @@
   </gazebo>
 
 
+<!-- ========================================= FB  ================================================= -->
 
 
   <gazebo reference="arm_joint_02">
@@ -45,7 +51,7 @@
 </gazebo>
 
 
-<!-- The ft_sensor plugin -->  
+<!-- ======================================  Plugins  ============================================== -->
 <gazebo>
     <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
         <updateRate>100.0</updateRate>
@@ -111,6 +117,7 @@
     </sensor>
   </gazebo>
 
+<!-- ===================================== ROS_CONTROL  ============================================ -->
 
 
   <gazebo>
