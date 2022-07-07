@@ -1,0 +1,30 @@
+process[moveit_setup_assistant-1]: started with pid [86837]
+
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[ INFO] [1657203753.749151456]: Loaded detectiBot robot model.
+[ INFO] [1657203753.750137451]: Setting Param Server with Robot Description
+[ INFO] [1657203753.753347066]: Robot semantic model successfully loaded.
+[ INFO] [1657203753.753381610]: Setting Param Server with Robot Semantic Description
+[ INFO] [1657203753.760524015]: Loading robot model 'detectiBot'...
+[ INFO] [1657203753.760574510]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[ INFO] [1657203753.822081366]: Stereo is NOT SUPPORTED
+[ INFO] [1657203753.822220550]: OpenGl version: 3.1 (GLSL 1.4).
+[ INFO] [1657203753.888073621]: Loading robot model 'detectiBot'...
+[ INFO] [1657203753.888110888]: No root/virtual joint specified in SRDF. Assuming fixed joint
+[ INFO] [1657203753.901369489]: Loading Setup Assistant Complete
+[ INFO] [1657203814.535138571]: -------------------------------------------------------------------------------
+[ INFO] [1657203814.535172706]: Statistics:
+[ INFO] [1657203814.535193980]:     11 : Total Links
+[ INFO] [1657203814.535219807]:     55 : Total possible collisions
+[ INFO] [1657203814.535237247]:      0 : Always in collision
+[ INFO] [1657203814.535253680]:     16 : Never in collision
+[ INFO] [1657203814.535274956]:      1 : Default in collision
+[ INFO] [1657203814.535296630]:     10 : Adjacent links disabled
+[ INFO] [1657203814.535317838]:     28 : Sometimes in collision
+[ INFO] [1657203814.535338866]:     27 : TOTAL DISABLED
+[ INFO] [1657203814.535405354]: Thread complete 55
+[ INFO] [1657204050.568287124]: Updating kinematic model
+[ INFO] [1657204050.570173327]: Loading robot model 'detectiBot'...
+[ INFO] [1657204050.570263688]: No root/virtual joint specified in SRDF. Assuming fixed joint
+
+
