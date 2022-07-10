@@ -31,6 +31,71 @@ Here below an image representing the overall structure of the **detectiBot** mod
 <img src="https://user-images.githubusercontent.com/61761835/178159762-7e1748ca-54a3-4912-a540-6a391b6beb55.png" width="500" height="500">
 </p>
 
+> ⚠️ _Remark: this is the same model used for configuring the mvoeit package!_
+
+### checking the model: step by step
+
+For cheking the model:
+
+1. save the current model with `.urdf` extension
+2. check if the current model contains errors (by parsing the urdf tag and show the potentially occuring error)
+
+   ```sh
+   check_urdf detectiBot.urdf
+   ```
+
+3. for viewing the structure of the robot links and joints graphically (two files will be generated with both `.gv` and `.pdf` extensions)
+
+    ```sh
+    urdf_to_graphiz detectiBot.urdf
+    ```
+
+4. For inspecting the model:
+   
+    ```sh
+    evince detectiBot.pdf
+    ```
+
+### from xacro to urdf 
+
+For ending up with a ".urdf" version of our .xacro file, simply run: 
+
+```sh
+rosrun xacro xacro ???.xacro --inorder > ???.urdf
+
+```
+
+where `???` simply stands for the name of the file 
+    
+### checking the model: in a wink …
+
+For checking the model, and launch the simulation:
+
+1. enable "execution" permission
+
+    ```sh
+    chmod +x test_model.py
+    ```
+  
+3. run the script
+
+    ```sh
+    ./test_model.py 
+    ```
+
+### using Rviz 
+
+For taking a look at the robot structure by means of RVIZ, please run:
+
+```sh
+roslaunch explab_2nd_moveit demo.launch
+```
+
+this is a gif demonstrating the `demo.launch` usage
+
+![moveit_second_attempt](https://user-images.githubusercontent.com/61761835/178161635-65725d55-474c-4106-bfed-2b0c51142895.gif)
+
+
 
 
 # About the material's colors 
