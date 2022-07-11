@@ -432,7 +432,7 @@
     </visual>
   </link>
   <!-- ======================================== Joint  =============================================== -->
-  <joint name="arm_joint_04" type="fixed">
+  <joint name="arm_joint_04" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.8" upper="1.8" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0 0.15"/>

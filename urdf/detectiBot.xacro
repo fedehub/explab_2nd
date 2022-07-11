@@ -351,7 +351,7 @@
 
 <!-- ======================================== Joint  =============================================== -->
 
-  <joint name="arm_joint_04" type="fixed">
+  <joint name="arm_joint_04" type="revolute">
   	<axis xyz="1 0 0"/>
   	<limit effort="1000.0" lower="-1.8" upper="1.8" velocity="0.5"/>
   	<origin rpy="0 0 0" xyz="0 0 ${cluedo_link_lenght/2}"/>
@@ -468,6 +468,7 @@
 	</actuator>
 </transmission>
 
+
 <transmission name="arm_joint_04_trans">
 	<type>transmission_interface/SimpleTransmission</type>
 	<joint name="arm_joint_04">
@@ -478,6 +479,7 @@
 		<mechanicalInterface>1</mechanicalInterface>
 	</actuator>
 </transmission>
+
 
 <transmission name="left_grip_trans">
 	<type>transmission_interface/SimpleTransmission</type>
