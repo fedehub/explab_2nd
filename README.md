@@ -112,7 +112,7 @@ For launching the MoveIt Setup Assistant, install it and launch with:
 roslaunch moveit_setup_assistant setup_assistant.launch
 ```
 
-> ⚠️ Please note that for this specific assignment a specific version of MoveIt! has been selected. For more info, please refer to my repo ([here][https://github.com/fedehub/robot_modelling#some-remarks])
+> ⚠️ Please note that for this specific assignment a specific version of MoveIt! has been selected. For more info, please refer to my repo ([here][4])
 
 ## About the material's colors 
 
@@ -123,3 +123,4 @@ As also mentioned in the [robot_modelling][1] repo, it is possible to appreciate
 [1]: https://github.com/fedehub/robot_modelling
 [2]: https://gist.github.com/naoki-mizuno/5e63a13597d5c5fe817c1600b829595e#file-xkcd_colors-urdf-xacro-L1
 [3]: https://ros-planning.github.io/moveit_tutorials/doc/setup_assistant/setup_assistant_tutorial.html
+[4]: https://github.com/fedehub/robot_modelling#some-remarks
