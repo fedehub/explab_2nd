@@ -93,7 +93,9 @@ roslaunch explab_2nd_moveit demo.launch
 
 this is a gif demonstrating the `demo.launch` usage
 
-![moveit_second_attempt](https://user-images.githubusercontent.com/61761835/178161635-65725d55-474c-4106-bfed-2b0c51142895.gif)
+![moveit_demo](https://user-images.githubusercontent.com/61761835/178219740-f194c2bb-8181-4839-aeaa-b59f9abc5982.gif)
+
+
 
 
 
