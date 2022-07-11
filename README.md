@@ -97,30 +97,35 @@ this is a gif demonstrating the `demo.launch` usage
 
 
 
-## MoveIt! Setup
+## MoveIt! Setup Assistant
 
 The MoveIt Setup Assistant is a graphical user interface for configuring any robot for use with MoveIt. It mainly generates:
 * a Semantic Robot Description Format (SRDF) file for a robot.
 * other necessary configuration files for use with the MoveIt pipeline. 
 For the complete explanation about a proper package configuration, please refer to [setup_assistant_tutorial][3]
 
-For launching the 
 
-For launching the MoveIt Setup Assistant, install it and launch with:
+For launching the MoveIt Setup Assistant, install it and run:
 
 ```sh
 roslaunch moveit_setup_assistant setup_assistant.launch
 ```
 
-> ⚠️ Please note that for this specific assignment a specific version of MoveIt! has been selected. For more info, please refer to my repo ([here][4])
+> ⚠️ Please note that for this  assignment a specific version of MoveIt! has been selected. For more info, please refer to my repo ([here][4])
+
+Although MoveIt! has tried to streamline the Gazebo integration, the auto-generated launch and config files are not readily available to use. Indeed, intervening and configuring some parameters and files was needed. For doing so, it is suggestable to refer to [this useful guide][5], through which 
 
 ## About the material's colors 
 
 As also mentioned in the [robot_modelling][1] repo, it is possible to appreciate  [here][2] a Gazebo color palette with xckd color names, by @naoki_mizuno
 
-### Resources 
+
+
+
+<!-- References -->
 
 [1]: https://github.com/fedehub/robot_modelling
 [2]: https://gist.github.com/naoki-mizuno/5e63a13597d5c5fe817c1600b829595e#file-xkcd_colors-urdf-xacro-L1
 [3]: https://ros-planning.github.io/moveit_tutorials/doc/setup_assistant/setup_assistant_tutorial.html
 [4]: https://github.com/fedehub/robot_modelling#some-remarks
+[5]: https://medium.com/@tahsincankose/custom-manipulator-simulation-in-gazebo-and-motion-planning-with-moveit-c017eef1ea90 
