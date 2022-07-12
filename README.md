@@ -113,7 +113,57 @@ roslaunch moveit_setup_assistant setup_assistant.launch
 
 > ⚠️ Please note that for this  assignment a specific version of MoveIt! has been selected. For more info, please refer to my repo ([here][4])
 
-Although MoveIt! has tried to streamline the Gazebo integration, the auto-generated launch and config files are not readily available to use. Indeed, intervening and configuring some parameters and files was needed. For doing so, it is suggestable to refer to [this useful guide][5], through which 
+Although MoveIt! has tried to streamline the Gazebo integration, the auto-generated launch and config files are not readily available to use. Indeed, intervening and configuring some parameters and files was needed. For doing so, it is suggestable to refer to [this useful guide][5]. 
+
+In this specific case, it was sufficient to:
+
+1. comment a line (21) of the `trajectory_execution.launch.xml` file, inside the launch folder 
+
+  ```xml
+  <!-- <arg name="execution_type" value="$(arg execution_type)" /> -->
+  ```
+
+2. modify the "default" values chosen for the PID controllers and the `i_clamp`, within the `ros_controllers.yaml` file; 
+
+  ```yaml
+  # for all arm_joint
+    p: 10
+    d: 0
+    i: 0
+    i_clamp: 0
+   ```
+3. add to the nineth line of `ros_controllers.launch` file, `joint_state_controller` as args, before `arm_controller`
+
+  ```yaml
+    <!-- Load the controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner"   respawn="false"
+    output="screen" args="joint_state_controller arm_controller "/>
+
+  ```
+
+4. modify the default velocity and acceleration's factors, in the `joint_limits.yaml` configuration file 
+
+  ```yaml
+  default_velocity_scaling_factor: 1
+  default_acceleration_scaling_factor: 1
+  
+  ```
+
+Then, for testing the gazebo integration, please run
+
+```sh
+roslaunch explab_2nd_moveit demo_gazebo.launch 
+
+```
+
+For a glimpse of how it works
+
+![demo_gaz](https://user-images.githubusercontent.com/61761835/178574333-083abf9a-4592-4a64-a238-3871448d5675.gif)
+
+
+
+
+
 
 ## About the material's colors 
 
