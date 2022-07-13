@@ -1,0 +1,57 @@
+# Problem generation
+# 1st terminal
+
+root@:~/ros_ws/src/explab_2nd# roslaunch explab_2nd rosplan_launcher.launch
+
+
+[ INFO] [1657723011.517923720]: KCL: (/rosplan_problem_interface) Ready to receive
+[ INFO] [1657723011.549194834]: KCL: (/rosplan_knowledge_base) Starting a PDDL Knowledge Base
+[ INFO] [1657723011.556652269]: KCL: (/rosplan_knowledge_base) Parsing domain
+[ INFO] [1657723011.556730741]: KCL: (/rosplan_knowledge_base) Parsing domain: /root/ros_ws/src/explab_2nd/common/db_domain.pddl.
+[ INFO] [1657723011.557786896]: KCL: (/rosplan_knowledge_base) Parsing initial state
+[ INFO] [1657723011.557831760]: KCL: (/rosplan_knowledge_base) Parsing Problem File: /root/ros_ws/src/explab_2nd/common/db_problem.pddl.
+[ INFO] [1657723011.558014706]: KCL: (/rosplan_knowledge_base) Ready to receive
+
+root@:~/ros_ws/src/explab_2nd# rosnode list
+/rosout
+/rosplan_knowledge_base
+/rosplan_problem_interface
+
+# 2nd terminal
+
+root@:~/ros_ws/src/explab_2nd# rosservice call /rosplan_problem_interface/problem_generation_server
+
+[ INFO] [1657723225.855830260]: KCL: (/rosplan_problem_interface) (problem.pddl) Generating problem file.
+[ INFO] [1657723226.048705753]: KCL: (/rosplan_problem_interface) (problem.pddl) The problem was generated.
+
+# viewing at the problem 
+
+root@494d9a9d12f6:~/ros_ws/src/explab_2nd# rostopic echo /rosplan_problem_interface/problem_instance -n 1 -p
+
+%time,field.data
+1657724242631260156,(define (problem task)
+(:domain db_domain)
+(:objects
+    wp1 wp2 wp3 wp4 - waypoint
+    detectibot - robot
+    hp - hypo
+)
+(:init
+
+
+    (not (complete_hypo))
+
+    (not (gathered_hint wp1))
+    (not (gathered_hint wp2))
+    (not (gathered_hint wp3))
+    (not (gathered_hint wp4))
+
+    (not_gripper_in_place)
+
+)
+(:goal (and
+    (true_hypo)
+))
+)
+
+# Planning 
