@@ -55,3 +55,40 @@ root@494d9a9d12f6:~/ros_ws/src/explab_2nd# rostopic echo /rosplan_problem_interf
 )
 
 # Planning 
+
+root@:~/ros_ws/src/explab_2nd# roslaunch explab_2nd rosplan_launcher.launch
+
+
+[ INFO] [1657725518.151242297]: KCL: (/rosplan_knowledge_base) Ready to receive
+[ INFO] [1657725518.171513955]: KCL: (/rosplan_planner_interface) Ready to receive
+
+--- 
+
+root@:~/ros_ws/src/explab_2nd# rosservice call /rosplan_problem_interface/problem_generation_server
+
+[ INFO] [1657738588.500104630]: KCL: (/rosplan_problem_interface) (problem.pddl) Generating problem file.
+[ INFO] [1657738588.701732964]: KCL: (/rosplan_problem_interface) (problem.pddl) The problem was generated.
+[ INFO] [1657738588.702240758]: KCL: (/rosplan_planner_interface) Problem received.
+
+--- 
+
+root@494d9a9d12f6:~/ros_ws/src/explab_2nd# rosservice call /rosplan_planner_interface/planning_server
+ERROR: service [/rosplan_planner_interface/planning_server] responded with an error: b''
+
+os_ws/src/ROSPlan/rosplan_planning_system/common/bin/popf /root/ros_ws/src/explab_2nd/common/db_domain.pddl /root/ros_ws/src/ROSPlan/rosplan_planning_system/test/pddl/turtlebot/problem.pddl > /root/ros_ws/src/explab_2nd/common/plan.pddl
+-----------------------------------------------------
+
+The supplied domain/problem file appear to violate part of the PDDL
+language specification.  Specifically:
+
+The planner will continue, but you may wish to fix your files accordingly
+Type Errors Encountered in Domain File
+--------------------------------------
+
+Due to type errors in the supplied domain file, the planner
+has to terminate.  The log of type checking is as follows:
+
+[ INFO] [1657739053.541336587]: KCL: (/rosplan_planner_interface) (problem.pddl) Planning complete
+[ INFO] [1657739053.541415449]: KCL: (/rosplan_planner_interface) (problem.pddl) Plan was unsolvable.
+
+

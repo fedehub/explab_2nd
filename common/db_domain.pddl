@@ -22,17 +22,18 @@
 	(complete_hypo ?hp - hypo)
 	(gathered_hint ?wp - waypoint)
     (not_gripper_in_place)
+	(at_temple ?tp - temple)
 )
 
 
-;; move to wp
+;; move to any waypoint
 (:durative-action go_to_wp
 
 	:parameters (?from ?to - waypoint
                  ?rb - robot
                 )
 
-	:duration ( = ?duration 15)
+	:duration ( = ?duration 60)
 
 	:condition (and
 		(at start(at ?from ?rb))
@@ -52,7 +53,7 @@
                   ?rb - robot
                 )
 
-	:duration ( = ?duration 15)
+	:duration ( = ?duration 60)
 
 	:condition (at start(at ?from ?rb))
 
@@ -70,7 +71,7 @@
                   ?rb - robot
                 )
 
-	:duration ( = ?duration 15)
+	:duration ( = ?duration 60)
 
 	:condition(and
 				(at start (at_temple ?from ?rb))
@@ -109,7 +110,7 @@
 
 	:parameters(?h - temple)
 
-	:duration ( = ?duration 15)
+	:duration ( = ?duration 60)
 
 	:condition (and 
 				(at start (forall (?wp - waypoint) ( gathered_hint ?wp)))
