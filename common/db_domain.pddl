@@ -3,200 +3,119 @@
 (:requirements 
 		:strips 
 		:typing 
-		:fluents
-		:durative-actions  
-		:adl
+		:fluents 
 		:disjunctive-preconditions 
-	)
+		:durative-actions 
+		:adl)
 
-(:types 
+(:types
 	waypoint
+	temple
 	robot
-	temple 
-	
 )
 
 (:predicates
-	(at ?wp - waypoint) ;; robot at a certain place
-	(has_been_at ?wp - waypoint)   ;; robot has been at some place
-	(not_yet_at ?wp - waypoint )    ;; robot has not been at some place
-	(true_hypo)         ;; true hypothesis, the real goal of the robot
-	(completed_hypo)    ;; completed hypothesis, hence consistent 
-	(gathered_hint)     ;; the hint that has been collectd 
-	(gripper_inplace)   ;; ... is correctly positioned for gathering hints ...
-	(not_gripper_inplace)    ;; ... is not correctly positioned ...
-	(at_temple ?tp - temple) ;; robot is in temple, ready for querying
-	(not_at_temple)
+	(at ?wp - waypoint) ;; robot at a certain point
+	(true_hypo) ;; true hypothesis, the real goal of the robot
+	(gripper_inplace) ;; gripper in the right position for gathering hints
+	(not_gripper_inplace) ;; gripper not in the right position for gathering hints
+	(consistent_hypo) ;; complete hypothesis, ready to be tested 
+	(at_temple ?tp - temple) ;; robot stays in Temple, ready for querying 
+	(gathered_hint ?wp -waypoint) ;; Hint got collected 
 )
 
-;; init phase, needed for starting from scratch each turn 
 
-(:durative-action init_phase
-
-	:parameters (?wp1 ?wp2 ?wp3 ?wp4 - waypoint 
-			 ?tp - temple )
-
-	:duration(= ?duration 1)
-
-	:condition (and
-		(at start(at ?wp1))
-		(at start(has_been_at ?wp1))
-		(at start(has_been_at ?wp2 ))
-		(at start(has_been_at ?wp3))
-		(at start(has_been_at ?wp4))
-		(at start(at_temple ?tp))
-		)
-
-	:effect (and
-		(at end(not(has_been_at ?wp2) ))
-		(at end(not(has_been_at ?wp3) ))
-		(at end(not(has_been_at ?wp4) ))
-		(at end(not(not_yet_at  ?wp2) ))
-		(at end(not(not_yet_at  ?wp3) ))
-		(at end(not(not_yet_at  ?wp4) ))
-		)
-)
-
-;; move to any waypoint
-
+;; Move to any waypoint
 (:durative-action go_to_wp
-
-	:parameters (?from ?to - waypoint )
-
-	:duration(= ?duration 1)
-
+	:parameters (?from ?to - waypoint)
+	:duration ( = ?duration 1)
 	:condition (and
 		(at start(at ?from))
 		(at start(not_gripper_inplace))
-		(at start(not_yet_at ?to ))
 		)
-
 	:effect (and
 		(at end(at ?to))
-		(at end(has_been_at ?from))
-		(at end(not(not_yet_at ?to)))
-		(at end(not (at ?from )))
+		(at start (not (at ?from)))
 		)
 )
 
-;; move gripper
+;; Move the gripper so that it can grab the hint
 (:durative-action shift_gripper
-
-	:parameters (?from - waypoint
-			 ?tp - temple)
-
-	:duration(= ?duration 1)
-
+	:parameters (?from ?to - waypoint)
+	:duration ( = ?duration 1)
 	:condition (and
 		(at start(at ?from))
-		(at start(has_been_at ?from))
 		(at start(not_gripper_inplace))
-		(at start(not(at_temple ?tp)))
 		)
-		
-
 	:effect (and
-		(at end(not(not_gripper_inplace)))
-		(at end(gripper_inplace))
+		(at end( gripper_inplace))
+		(at end (not (not_gripper_inplace)))
+		(at end (at ?from))
 		)
-)		
+) 
+		
 
 ;; collect the hint within the marker 
 (:durative-action gather_hint
-
-	:parameters (?wp - waypoint ?rb - robot ?tp - temple )
-
-	:duration (= ?duration 1)
-
-	:condition (and 
-		   (at start(at ?wp ))
-		   (at start(gripper_inplace))
-		   (at start(has_been_at ?wp))
-		   (at start(not(at_temple ?tp)))        
-		   )
-
+	:parameters (?wp - waypoint)
+	:duration ( = ?duration 1)
+	:condition (and (at start(at ?wp))
+					
+				)
 	:effect (and 
-		(at end( gathered_hint ))
-		(at start(not(gripper_inplace)))
-		(at start( not_gripper_inplace))
-		)
+				(at end( gathered_hint ?wp))
+			)
 )
 
 
-;; checking with ontology wheter an hypo is complete or not 
-(:durative-action check_completed_hypo
-
-	:parameters(?rb - robot  ?wp - waypoint )
-
-	:duration (= ?duration 1)
-
-	:condition (and 
-			(at start( at ?wp )) 
-			(at start( gathered_hint ))
-			)
-			
-	:effect ( and
-			(at end (completed_hypo))
-			(at start(not (gathered_hint)))
-			)
-)	
-
-
-
-;; reach the temple for asking oracle 		
+;; reach the temple for querying the oracle 
 (:durative-action reach_temple
-
-	:parameters ( ?from - waypoint  ?rb - robot ?tp - temple )
-
-	:duration   (= ?duration 60)
-
-	:condition  (and
-			(at start(at ?from))
-			(at start(completed_hypo))
-			)
-
+	:parameters ( ?from - waypoint ?to -temple)
+	:duration ( = ?duration 1)
+	:condition (at start(at ?from))
 	:effect (and
-		(at start(not (at ?from )))
-		(at end (at_temple ?tp))
+		(at start(not (at ?from)))
+		(at end (at_temple ?to))
 		)
 )
 
 
-		
-;; query the oracle for verifying whether an hypo is the true one or not
-(:durative-action query_hypo
+;; leave the temple for starting exploring the waypoints
+(:durative-action leave_temple
+	:parameters ( ?from - temple ?to - waypoint)
+	:duration ( = ?duration 1)
+	:condition(and
+				(at start (at_temple ?from))
+				)
+	:effect(and
+		(at start (not(at_temple ?from)))
+		(at end(at ?to))
+		)
+)
 
-	:parameters (?tp - temple)
 
-	:duration   (= ?duration 1)
-
+(:durative-action check_consistent_hypo
+	:parameters(?wp - waypoint)
+	:duration (= ?duration 1)
 	:condition (and 
-			(at start(at_temple ?tp))
-			(at start(completed_hypo))
+				(at start (forall (?wp - waypoint) ( gathered_hint ?wp)))
+				)
+	:effect ( and
+			(at end (consistent_hypo))
 			)
+)			
+
+(:durative-action query_hypo
+	:parameters(?tp - temple)
+	:duration (= ?duration 1)
+	:condition (and 
+				(at start(at_temple ?tp))
+				(at start(consistent_hypo))
+				)
 				
 	:effect (and
 			(at end(true_hypo))
 			)
-)		
-		
-
-
-;; leave the temple for starting to explore 
-(:durative-action leave_temple
-
-	:parameters (?from - temple ?to - waypoint )
-
-	:duration (= ?duration 1)
-
-	:condition(and
-		(at start (at_temple ?from))
-		)
-
-	:effect(and
-		(at start (not(at_temple ?from)))
-		(at end(at ?to ))
-		)
 )
 
 )
