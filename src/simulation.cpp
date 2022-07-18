@@ -1,8 +1,8 @@
 #include <ros/ros.h>
 #include <gazebo_msgs/LinkStates.h>
 #include <visualization_msgs/MarkerArray.h>
-#include <erl2/ErlOracle.h>
-#include <erl2/Oracle.h>
+#include <explab_2nd/ErlOracle.h>
+#include <explab_2nd/Oracle.h>
 
 #include <iostream>
 #include <stdlib.h>
@@ -34,7 +34,7 @@ double distfromtarget (double x, double y, double z, double x1, double y1, doubl
 	
 }
 
-bool oracleService(erl2::Oracle::Request &req, erl2::Oracle::Response &res)
+bool oracleService(erl2::Oracle::Request &req, explab_2nd::Oracle::Response &res)
 	{
 		res.ID = winID;
 		return true;
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 ros::init(argc, argv, "assignment2");
 ros::NodeHandle nh;
 ros::Publisher vis_pub = nh.advertise<visualization_msgs::MarkerArray>( "/visualization_marker", 0 );
-oracle_pub = nh.advertise<erl2::ErlOracle>( "/oracle_hint", 0 );
+oracle_pub = nh.advertise<explab_2nd::ErlOracle>( "/oracle_hint", 0 );
 ros::ServiceServer service= nh.advertiseService("/oracle_solution", oracleService);
 ros::Subscriber sub = nh.subscribe("/gazebo/link_states", 10, oracleCallback);
 visualization_msgs::MarkerArray markers;
