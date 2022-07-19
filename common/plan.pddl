@@ -7,7 +7,7 @@ Initial heuristic = 16.000
 b (15.000 | 4.003)b (13.000 | 5.004)b (11.000 | 7.006)b (9.000 | 8.007)b (8.000 | 10.009)b (7.000 | 10.009)b (5.000 | 11.010)b (3.000 | 12.011)b (2.000 | 13.012)b (1.000 | 13.012);;;; Solution Found
 ; States evaluated: 54
 ; Cost: 14.013
-; Time 0.02
+; Time 0.00
 0.000: (leave_temple tp wp1)  [1.000]
 1.001: (shift_gripper wp1)  [1.000]
 2.002: (gather_hint wp1)  [1.000]
