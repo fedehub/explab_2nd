@@ -15,13 +15,19 @@
 )
 
 (:predicates
-	(at ?wp - waypoint) ;; robot at a certain point
-	(true_hypo) ;; true hypothesis, the real goal of the robot
-	(gripper_inplace) ;; gripper in the right position for gathering hints
-	(not_gripper_inplace) ;; gripper not in the right position for gathering hints
-	(consistent_hypo) ;; complete hypothesis, ready to be tested 
-	(at_temple ?tp - temple) ;; robot stays in Temple, ready for querying 
-	(gathered_hint ?wp -waypoint) ;; Hint got collected 
+	(at ?wp - waypoint)                ;; robot at a certain point
+	(has_been_at ?wp - waypoint)       ;; robot has visited a certain location 
+	(true_hypo)                        ;; true hypothesis, the real goal of the robot
+	(gripper_inplace)                  ;; gripper in the right position for gathering hints
+	(consistent_hypo)                  ;; complete hypothesis, ready to be tested 
+	(at_temple ?tp - temple)           ;; robot stays in Temple, ready for querying 
+	(gathered_hint ?wp - waypoint)     ;; Hint got collected 
+	(not_gathered_hint ?wp - waypoint)
+	(not_has_been_at ?wp - waypoint)
+	(not_gripper_inplace)              ;; gripper not in the right position for gathering hints
+	
+	
+	
 )
 
 
@@ -32,25 +38,34 @@
 	:condition (and
 		(at start(at ?from))
 		(at start(not_gripper_inplace))
+		(at start(gathered_hint ?from ))
+		(at start(not_has_been_at ?to))
 		)
 	:effect (and
 		(at end(at ?to))
 		(at start (not (at ?from)))
-		)
+		;;(at end (not_gripper_inplace)
+		(at end(not(not_has_been_at ?from)))
+		(at end (has_been_at ?to))
+	
+		
+		
+		
+)
 )
 
 ;; Move the gripper so that it can grab the hint
 (:durative-action shift_gripper
-	:parameters (?from ?to - waypoint)
+	:parameters (?wp - waypoint)
 	:duration ( = ?duration 1)
 	:condition (and
-		(at start(at ?from))
+		(at start(at ?wp))
 		(at start(not_gripper_inplace))
+		(at start(not_gathered_hint ?wp))
 		)
 	:effect (and
 		(at end( gripper_inplace))
 		(at end (not (not_gripper_inplace)))
-		(at end (at ?from))
 		)
 ) 
 		
@@ -59,11 +74,17 @@
 (:durative-action gather_hint
 	:parameters (?wp - waypoint)
 	:duration ( = ?duration 1)
-	:condition (and (at start(at ?wp))
-					
+	:condition (and 
+				(at start(at ?wp))
+				(at start(gripper_inplace))
 				)
+					
+				
 	:effect (and 
 				(at end( gathered_hint ?wp))
+				(at end(not_gripper_inplace))
+				(at end(not(gripper_inplace)))
+				(at end(not(not_gathered_hint ?wp)))
 			)
 )
 
@@ -72,9 +93,13 @@
 (:durative-action reach_temple
 	:parameters ( ?from - waypoint ?to -temple)
 	:duration ( = ?duration 1)
-	:condition (at start(at ?from))
+	:condition (and
+			   (at start(at ?from))
+			   (at start (forall (?wp - waypoint) ( gathered_hint ?wp)))
+			   )
 	:effect (and
 		(at start(not (at ?from)))
+		(at end (at_temple ?to))
 		(at end (at_temple ?to))
 		)
 )
@@ -86,6 +111,7 @@
 	:duration ( = ?duration 1)
 	:condition(and
 				(at start (at_temple ?from))
+				;; (at start(not_gripper_inplace))
 				)
 	:effect(and
 		(at start (not(at_temple ?from)))
@@ -98,7 +124,7 @@
 	:parameters(?wp - waypoint)
 	:duration (= ?duration 1)
 	:condition (and 
-				(at start (forall (?wp - waypoint) ( gathered_hint ?wp)))
+			   (at start (forall (?wp - waypoint) ( gathered_hint ?wp)))
 				)
 	:effect ( and
 			(at end (consistent_hypo))

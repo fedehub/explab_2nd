@@ -8,11 +8,22 @@
 
 
 
-    (not_gripper_inplace)
 
 
     (at_temple tp)
 
+
+    (not_gathered_hint wp1)
+    (not_gathered_hint wp2)
+    (not_gathered_hint wp3)
+    (not_gathered_hint wp4)
+
+    (not_has_been_at wp1)
+    (not_has_been_at wp2)
+    (not_has_been_at wp3)
+    (not_has_been_at wp4)
+
+    (not_gripper_inplace)
 
 )
 (:goal (and
