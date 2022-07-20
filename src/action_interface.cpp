@@ -11,7 +11,7 @@
 #define TERR( msg )       ROS_WARN_STREAM( OUTLABEL << "ERROR: " << msg )
 
 #endif
-
+#include "rosplan_action_interface/RPActionInterface.h"
 #include "ros/ros.h"
 
 #include <string>
@@ -116,6 +116,7 @@ private:
 	void gather_hint_setup()
 	{
 		// istanzia il subscriber con l'oracolo
+		
 	}
 
 	void move_to_wp_setup()
@@ -160,7 +161,7 @@ private:
 
 	bool move_to_wp_action()
 	{
-		
+
 		return true; // chiamata a servizio go_to_point
 	}
 
