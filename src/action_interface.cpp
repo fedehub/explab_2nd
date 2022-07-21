@@ -1,5 +1,5 @@
 
-#define NODE_NAME action_interface
+#define NODE_NAME "action_interface"
 
 #ifndef __DEBUG_MACROS__
 #define __DEBUG_MACROS__
@@ -12,20 +12,28 @@
 
 #endif
 #include "rosplan_action_interface/RPActionInterface.h"
+
+#include <actionlib/client/simple_action_client.h>
+#include <actionlib/client/terminal_state.h>
+
 #include "ros/ros.h"
+#include "explab_2nd/Oracle.h"
+#include <erl2/ErlOracle.h>
+#include <erl2/Oracle.h>
 
 #include <string>
 #include <map>
 #include <signal.h>
 
 
-// TODO node name!
-class myaction : RPActionInterface
+namespace KCL_rosplan {
+	
+class myaction : public RPActionInterface
 {
 public:
 	
 	// node constructor
-	myaction( ) : RPActionInterface( )
+	myaction() : RPActionInterface(  )
 	{
 		// init nodo
 
@@ -67,14 +75,14 @@ public:
 				return check_consistent_hypo_action();
 
 			else
-				TERR("An error occoured while looking for any correspondance with the available actions ")
+				TERR("An error occoured while looking for any correspondance with the available actions ");
 				return false;
 		}
 		else if (!class_initialized)
 		{
 			// istanzia le interfacce ROS a seconda del nome dell'azione
 			if( msg->name == "gather_hint" )
-				gather_int_setup();
+				gather_hint_setup();
 
 			else if( msg->name == "move_to_wp" )
 				move_to_wp_setup();
@@ -105,7 +113,9 @@ public:
 			return false; // gestisci meglio il caso d'errore 
 	}
 
-private:
+private: 
+
+	ros::NodeHandle nh;
 
 	// SETUP of single actions 
 
@@ -137,7 +147,7 @@ private:
 		// create servicee client with ...
 	}
 
-	void check_conistent_hypo_setup()
+	void check_consistent_hypo_setup()
 	{
 		// interfaccia con go_to_point (servizio)
 		// create servicee client with ...
@@ -147,6 +157,11 @@ private:
 	{
 		// interfaccia con go_to_point (servizio)
 		// create servicee client with ...
+	}
+	
+	void shift_gripper_setup( )
+	{
+		// ...
 	}
 
 
@@ -184,14 +199,21 @@ private:
 	{
 		return true; // chiamata a servizio go_to_point
 	}
+	
+	bool shift_gripper_action()
+	{
+		return true; // chiamata a servizio go_to_point
+	}
 
 
 
-	void cbk_gather_hint( const msgtype::ConstPtr& hint )
+	void cbk_gather_hint( const erl2::ErlOracle::ConstPtr& hint )
 	{
 		// implementazione del subscriber ... 
 	}
 };
+
+}
 
 
 int main(int argc, char **argv) 
@@ -200,7 +222,7 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("~");
 	
 	// create PDDL action publisher
-	myaction ac( nh );
+	KCL_rosplan::myaction ac;
 	
 	// run the node
 	ac.runActionInterface();
