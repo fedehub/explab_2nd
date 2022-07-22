@@ -40,7 +40,7 @@ public:
 	}
 	
 	// action dispatch callback 
-	bool concreteCallback (const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
+	bool concreteCallback ( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
 		/*
 		// action name
@@ -69,7 +69,7 @@ public:
 				return reach_temple_action();
 			
 			else if( action_name == "leave_temple")
-				return reach_temple_action();
+				return leave_temple_action( msg );
 
 			else if( action_name == "check_consistent_hypo")
 				return check_consistent_hypo_action();
@@ -117,6 +117,8 @@ private:
 
 	ros::NodeHandle nh;
 
+	ros::ServiceClient cl_go_to_point;
+
 	// SETUP of single actions 
 
 	bool class_initialized = false;
@@ -141,10 +143,13 @@ private:
 		// create servicee client with ...
 	}
 
-	void leave_temple_setup()
+	void leave_temple_setup( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
 		// interfaccia con go_to_point (servizio)
 		// create servicee client with ...
+
+		// client a go_to_point
+		cl_go_to_point = nh.serviceClient<explab_2nd::Position>( "/go_to_point" );
 	}
 
 	void check_consistent_hypo_setup()
@@ -176,18 +181,131 @@ private:
 
 	bool move_to_wp_action()
 	{
+		
+			// chiama costruttore
+		explab_2nd::Position mt;
+		// trova il waypoint a cui andare 
+		// dal waypoint ricava le coordinate 2D dove muovere il robot	
+		if(msg->parameters[1].value == "wp1")
+			{
+				// set the goal coordinates
+				mt.request.x = 2.5;
+				mt.request.y = 0.0;
+				mt.request.theta = -3.14/2;
+			}
+		// if the second parameter from the plan is wp2
+		else if (msg->parameters[1].value == "wp2")
+			{
+				// set the goal coordinates
+				mt.request.x = 0.0;
+				mt.request.y = 2.5;
+				mt.request.theta = 0.0;
+			}
+		// if the second parameter from the plan is wp3
+		else if (msg->parameters[1].value == "wp3")
+			{
+				// set the goal coordinates
+				mt.request.x = -2.5;
+				mt.request.y = 0.0;
+				mt.request.theta = 3.14/2;
+			}
+		// if the second parameter from the plan is wp4
+		else if (msg->parameters[1].value == "wp4")
+			{
+				// set the goal coordinates
+				mt.request.x = 0.0;
+				mt.request.y = -2.5;
+				mt.request.theta = 3.14;
+			}
 
-		return true; // chiamata a servizio go_to_point
+		// print some info messages 
+		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " std::endl;
+		std::cout << "x = (" << mt.request.x << ") ;y =  [" << mt.request.y <<") z = (" << mt.request.z << ") " << std::endl;
+		// service call to navigation service go_to_point 
+		cl_go_to_point.call(mt);
+		std::cout << "Position successfuly reached!" << std::endl; 
+		
+		return true; 
+		
 	}
 
-	bool leave_temple_action()
+	bool leave_temple_action( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
-		return true; // chiamata a servizio go_to_point
+		// chiama costruttore
+		explab_2nd::Position lt;
+		// trova il waypoint a cui andare 
+		// dal waypoint ricava le coordinate 2D dove muovere il robot	
+		if(msg->parameters[1].value == "wp1")
+			{
+				// set the goal coordinates
+				lt.request.x = 2.5;
+				lt.request.y = 0.0;
+				lt.request.theta = -3.14/2;
+			}
+		// if the second parameter from the plan is wp2
+		else if (msg->parameters[1].value == "wp2")
+			{
+				// set the goal coordinates
+				lt.request.x = 0.0;
+				lt.request.y = 2.5;
+				lt.request.theta = 0.0;
+			}
+		// if the second parameter from the plan is wp3
+		else if (msg->parameters[1].value == "wp3")
+			{
+				// set the goal coordinates
+				lt.request.x = -2.5;
+				lt.request.y = 0.0;
+				lt.request.theta = 3.14/2;
+			}
+		// if the second parameter from the plan is wp4
+		else if (msg->parameters[1].value == "wp4")
+			{
+				// set the goal coordinates
+				lt.request.x = 0.0;
+				lt.request.y = -2.5;
+				lt.request.theta = 3.14;
+			}
+
+		// print some info messages 
+		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " std::endl;
+		std::cout << "x = (" << lt.request.x << ") ;y =  [" << lt.request.y <<") z = (" << lt.request.z << ") " << std::endl;
+		// service call to navigation service go_to_point 
+		cl_go_to_point.call(lt);
+		std::cout << "Position successfuly reached!" << std::endl; 
+		
+		return true; 
 	}
 
-	bool reach_temple_action()
+	bool reach_temple_action(  )
 	{
-		return true; // chiamata a servizio go_to_point
+		// chiama il servizio di navigazione verso (0,0)
+		// chiama costruttore
+		explab_2nd::Position rt;
+
+		if(msg->parameters[1].value == "tp")
+			{
+				std::cout << " Populating the request for reaching temple coordinates" << std::endl;
+				// set the goal coordinates
+				rt.request.x = 0.0;
+				rt.request.y = 0.0;
+				rt.request.theta = 0.0;
+			}
+		else
+		{
+			std::cout << "ERROR while attempting to populate service request for reaching temple"
+			return 1;
+		}
+
+		// print some info messages 
+		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " std::endl;
+		std::cout << "x = (" << rt.request.x << ") ;y =  [" << rt.request.y <<") z = (" << rt.request.z << ") " << std::endl;
+		// service call to navigation service go_to_point 
+		cl_go_to_point.call(rt);
+		std::cout << "Position successfuly reached!" << std::endl; 
+		
+		return true; 
+
 	}
 
 	bool check_consistent_hypo_action()
