@@ -61,11 +61,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-#add_service_files(
-#   FILES
+add_service_files(
+   FILES
    Oracle.srv
    Position.srv
-#)
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -125,10 +125,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+ include
   ${catkin_INCLUDE_DIRS}
 #  ${Boost_INCLUDE_DIRS}
-#)
+)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

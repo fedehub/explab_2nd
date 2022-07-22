@@ -20,6 +20,7 @@
 #include "explab_2nd/Oracle.h"
 #include <erl2/ErlOracle.h>
 #include <erl2/Oracle.h>
+#include "explab_2nd/Position.h"
 
 #include <string>
 #include <map>
@@ -60,13 +61,13 @@ public:
 				return gather_hint_action();
 
 			else if( action_name == "move_to_wp" )
-				return move_to_wp_action();
+				return move_to_wp_action( msg );
 
 			else if( action_name == "shift_gripper")
 				return shift_gripper_action();
 
 			else if( action_name == "reach_temple")
-				return reach_temple_action();
+				return reach_temple_action( msg );
 			
 			else if( action_name == "leave_temple")
 				return leave_temple_action( msg );
@@ -85,16 +86,16 @@ public:
 				gather_hint_setup();
 
 			else if( msg->name == "move_to_wp" )
-				move_to_wp_setup();
+				move_to_wp_setup(msg);
 
 			else if(msg->name == "shift_gripper")
 				shift_gripper_setup();
 
 			else if(msg->name == "reach_temple")
-				reach_temple_setup();
+				reach_temple_setup(msg);
 
 			else if(msg->name == "leave_temple")
-				leave_temple_setup();
+				leave_temple_setup(msg);
 
 			else if(msg->name == "check_consistent_hypo")
 				check_consistent_hypo_setup();
@@ -116,6 +117,8 @@ public:
 private: 
 
 	ros::NodeHandle nh;
+	
+	// services
 
 	ros::ServiceClient cl_go_to_point;
 
@@ -131,16 +134,18 @@ private:
 		
 	}
 
-	void move_to_wp_setup()
+	void move_to_wp_setup( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
 		// interfaccia con go_to_point (servizio)
 		// create servicee client with ...
+		cl_go_to_point = nh.serviceClient<explab_2nd::Position>( "/go_to_point" );
 	}
 
-	void reach_temple_setup()
+	void reach_temple_setup( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
 		// interfaccia con go_to_point (servizio)
 		// create servicee client with ...
+		cl_go_to_point = nh.serviceClient<explab_2nd::Position>( "/go_to_point" );
 	}
 
 	void leave_temple_setup( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
@@ -179,10 +184,9 @@ private:
 		return true; // implementazione dell'azione
 	}
 
-	bool move_to_wp_action()
+	bool move_to_wp_action( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
-		
-			// chiama costruttore
+		// chiama costruttore
 		explab_2nd::Position mt;
 		// trova il waypoint a cui andare 
 		// dal waypoint ricava le coordinate 2D dove muovere il robot	
@@ -219,8 +223,8 @@ private:
 			}
 
 		// print some info messages 
-		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " std::endl;
-		std::cout << "x = (" << mt.request.x << ") ;y =  [" << mt.request.y <<") z = (" << mt.request.z << ") " << std::endl;
+		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " << std::endl;
+		std::cout << "x = (" << mt.request.x << ") ;y =  [" << mt.request.y <<") z = (" << mt.request.theta << ") " << std::endl;
 		// service call to navigation service go_to_point 
 		cl_go_to_point.call(mt);
 		std::cout << "Position successfuly reached!" << std::endl; 
@@ -268,8 +272,8 @@ private:
 			}
 
 		// print some info messages 
-		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " std::endl;
-		std::cout << "x = (" << lt.request.x << ") ;y =  [" << lt.request.y <<") z = (" << lt.request.z << ") " << std::endl;
+		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " << std::endl;
+		std::cout << "x = (" << lt.request.x << ") ;y =  [" << lt.request.y <<") z = (" << lt.request.theta << ") " << std::endl;
 		// service call to navigation service go_to_point 
 		cl_go_to_point.call(lt);
 		std::cout << "Position successfuly reached!" << std::endl; 
@@ -277,7 +281,7 @@ private:
 		return true; 
 	}
 
-	bool reach_temple_action(  )
+	bool reach_temple_action( const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg )
 	{
 		// chiama il servizio di navigazione verso (0,0)
 		// chiama costruttore
@@ -293,13 +297,13 @@ private:
 			}
 		else
 		{
-			std::cout << "ERROR while attempting to populate service request for reaching temple"
+			std::cout << "ERROR while attempting to populate service request for reaching temple" << std::endl;
 			return 1;
 		}
 
 		// print some info messages 
-		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " std::endl;
-		std::cout << "x = (" << rt.request.x << ") ;y =  [" << rt.request.y <<") z = (" << rt.request.z << ") " << std::endl;
+		std::cout << "Leaving [" << msg->parameters[0].value << "] location for reaching [" << msg->parameters[1].value <<"] at: " << std::endl;
+		std::cout << "x = (" << rt.request.x << ") ;y =  [" << rt.request.y <<") z = (" << rt.request.theta << ") " << std::endl;
 		// service call to navigation service go_to_point 
 		cl_go_to_point.call(rt);
 		std::cout << "Position successfuly reached!" << std::endl; 
