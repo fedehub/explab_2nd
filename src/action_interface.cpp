@@ -13,13 +13,13 @@
 #endif
 #include "rosplan_action_interface/RPActionInterface.h"
 
-#include <actionlib/client/simple_action_client.h>
-#include <actionlib/client/terminal_state.h>
+#include "actionlib/client/simple_action_client.h"
+#include "actionlib/client/terminal_state.h"
 
 #include "ros/ros.h"
 #include "explab_2nd/Oracle.h"
-#include <erl2/ErlOracle.h>
-#include <erl2/Oracle.h>
+#include "erl2/ErlOracle.h"
+#include "erl2/Oracle.h"
 #include "explab_2nd/Position.h"
 
 #include <string>
@@ -237,6 +237,9 @@ private:
 	{
 		// chiama costruttore
 		explab_2nd::Position lt;
+
+		
+
 		// trova il waypoint a cui andare 
 		// dal waypoint ricava le coordinate 2D dove muovere il robot	
 		if(msg->parameters[1].value == "wp1")
@@ -322,8 +325,45 @@ private:
 		return true; // chiamata a servizio go_to_point
 	}
 	
+	/**
+	 * @brief: Action implementing the shift_arm logical action
+	 * @param: None
+	 * 
+	 * @return: 
+	 * 
+	 * This function implements the interace with moveIt for shifting 
+	 * the cluedo_link at a certain quote depending on wherever the 
+	 * marker is placed within the simulated environment 
+	 * To retrieve the hint on the lowest set position.
+	 */
 	bool shift_gripper_action()
 	{
+		// we define the robot description employed for realising the urdf robot model 
+		robot_model_loader::RobotModelLoader robot_model_loader( " robot_description " );
+		robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
+		ROS_INFO("Model frame: %s", kinematic_model->getModelFrame().c_str());
+		// planning_scene::PlanningScene planning_scene(kinematic_model);
+		
+		
+		
+		// constructing a RobotState that maintains the configuration of the robot. 
+		robot_state::RobotStatePtr kinematic_state(new robot_state::RobotState(kinematic_model));
+		// setting all joints in the state to their default value
+		kinematic_state->setToDefaultValues();
+		// getting the robot model for the arm group 
+		const robot_state::JointModelGroup* joint_model_group = kinematic_model->getJointModelGroup("arm");
+		const std::vector<std::string> &joint_names = joint_model_group->getJointModelNames();
+		
+		// setting a pose goal 
+		planning_interface::MotionPlanRequest req;
+		planning_interface::MotionPlanResponse res;
+		geometry_msgs::PoseStamped pose;
+		pose.header.frame_id = "torso_lift_link";
+		pose.pose.position.x = 0.75;
+		pose.pose.position.y = 0.0;
+		pose.pose.position.z = 0.0;
+		pose.pose.orientation.w = 1.0;
+		
 		return true; // chiamata a servizio go_to_point
 	}
 
