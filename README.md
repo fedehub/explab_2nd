@@ -19,7 +19,6 @@ To do:
   - [x] modify the `launch` file, accordingly
 - [x] moveit frammework
 - [x] output file 
-- [ ] rosPlan
 
 # About the robot 
 
